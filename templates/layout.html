@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Icon -->
+        <link rel="icon" href="{{ url_for('static', filename='bubble.ico') }}">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <!-- CSS stylesheet -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">Flack</span>
+    </nav>
+
+    <!-- Page content -->
+    <br>
+    {% block main %}{% endblock %}
+
+    <!-- Footer -->
+    <br>
+    <footer class="small text-center text-muted">
+        <p id="foottext">Developed with &hearts; by Artspire</p>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- Socket.io JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+    <script type="text/javascript">
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+          // Connect to websocket
+          var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+          // When connected, configure buttons
+          socket.on('connect', () => {
+
+              const connected = "has connected";
+              socket.emit('submit message', {'message': connected, 'username': null, 'channel': null});
+
+              const join = document.querySelector('#channel-select').innerHTML;
+              socket.emit('join_channel', join);
+
+              // The 'send message' button should emit a "submit messsage" event
+              document.querySelector('#send-button').onclick = () => {
+                  const message = document.querySelector('#message-input').value;
+                  const channel = document.querySelector('#channel-select').innerHTML;
+                  socket.emit('submit message', {'message': message, 'username': null, 'channel': channel});
+              };
+
+              document.querySelector('#change-name-button').onclick = (e) => {
+                  e.preventDefault()
+                  const username = document.querySelector('#name-input').value;
+                  document.querySelector('#username-select').innerHTML = username;
+                  const changed = "has changed display name to";
+                  socket.emit('submit message', {'message': changed, 'username': username, 'channel': null});
+              };
+
+          // When a new message is announced, add to the unordered 'messages' list
+          socket.on('announce message', entire_message => {
+              const li = document.createElement('li');
+              li.innerHTML = entire_message;
+              document.querySelector('#messages').append(li);
+              document.querySelector('#message-input').value = "";
+              document.querySelector('#name-input').value = "";
+          });
+      });
+    });
+
+    </script>
+
+    </body>
+
+</html>

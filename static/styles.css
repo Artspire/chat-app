@@ -1,0 +1,97 @@
+nav .navbar-brand {
+    font-size: x-large;
+    font-weight: lighter;
+}
+
+body {
+  background-color: #5fc9f8;
+}
+
+#cb-1, #login-form, #error {
+  background-color: #D3D3D3;
+}
+
+#cb-2 {
+  background-color: #ffffff;
+}
+
+#cb-3 {
+  background-color: #53d769;
+}
+
+#cb-4 {
+  background-color: #fd9426;
+}
+
+h4, p {
+  font-weight: lighter;
+}
+
+#channel-input, #message-input, #name-input {
+  margin-bottom: 10px;
+}
+
+#message-input {
+  width: 70%;
+  margin-top: 10px;
+}
+
+@media(max-width: 768px) {
+  #message-input {
+    border-color: #5fc9f8;
+    border-width: 2px;
+    margin-top: 0;
+    width: 100%;
+  }
+}
+
+@media(max-width: 992px) {
+  #name-input, #channel-input {
+    width: 250px;
+  }
+}
+
+#channel-message {
+  color: darkred;
+}
+
+#channel-container, #channel {
+  margin-top: 20px;
+}
+
+@media(max-width: 992px) {
+  #username-container {
+    margin-top: 20px;
+  }
+}
+
+#login-form {
+  text-align: center;
+}
+
+#error, #error-message {
+  font-weight: lighter;
+  text-align: center;
+  color: darkred;
+}
+
+#channels, #messages {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#display-name {
+  width: 250px;
+  display: inline-block;
+}
+
+.form-inline {
+  margin: 0;
+}
+
+@media(min-width: 768px) {
+  #send-button {
+    margin-left: 5px;
+  }
+}

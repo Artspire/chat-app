@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Flack
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-8">
+                <div class="container">
+                    <div class="card rounded">
+                        <div id="cb-1" class="card-body p-5">
+                            <h4 id="channel-message"><b>Create or select channel</b></h4>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+                <div class="container" id="username-container">
+                    <div class="card rounded">
+                        <div id="cb-3" class="card-body p-5">
+                            <h4>Welcome, <b>{{ session['username'] }}</b></h4>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" id="channel-container">
+                    <div class="card rounded">
+                        <div id="cb-4" class="card-body p-5">
+                            <h4>Channels</h4>
+                            <hr>
+                            {% for channel in channels %}
+                                <ul id="channels">
+                                    <li><a href="{{ url_for('channel', channel_id=channel) }}">#{{ channel }}</a></li>
+                                </ul>
+                            {% else %}
+                                <p>Create channel</p>
+                            {% endfor %}
+                            <form id="channel" action="{{ url_for('index') }}" method="post">
+                                <input id="channel-input" class="form-control form-rounded" type="text" name="channel" value="" placeholder="Enter channel name">
+                                <button class="btn btn-primary" type="submit">Create channel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -22,4 +22,3 @@ My personal touch is the ability to change the display name on the channel page,
 to via a form that gets posted (which reloads the page) with emitting a message to all users that a user has changed his/her display name.
 
 Extracting the new display name form the message that gets emitted and updating the `session['username']` variable that way.
-# project2
