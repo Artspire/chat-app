@@ -78,8 +78,6 @@ def login():
         # Also store username in session variable 'oldusername'
         session['oldusername'] = session['username']
 
-        session.permanent = True
-
         # Redirect user to main page
         return redirect("/")
 
