@@ -149,20 +149,6 @@ def messages(data):
     if message == 'has connected':
         entire_message = session['username'] + " " + message
 
-    # If user has changed his/her display name on channel page
-    elif message == 'has changed display name to':
-
-        username = data["username"]
-
-        # If user changes display name, clear and update session variable
-        session.pop('username', None)
-        session['username'] = username
-
-        entire_message = session['oldusername'] + " " + message + " " + username
-
-        # Update 'oldusername' session variable to the new display name
-        session['oldusername'] = session['username']
-
     else:
         entire_message = session['username'] + ": " + message + " " + "[" + timestamp + "]"
 
@@ -174,6 +160,26 @@ def messages(data):
         chat_history[room].append(entire_message)
 
     print(entire_message)
+
+    emit("announce message", entire_message, room=room)
+
+
+@socketio.on("change name")
+def change(data):
+
+    username = data["username"]
+    room = data["channel"]
+
+    join_room(room)
+
+    # If user changes display name, clear and update session variable
+    session.pop('username', None)
+    session['username'] = username
+
+    entire_message = session['oldusername'] + " has changed his/her name to " + username
+
+    # Update 'oldusername' session variable to the new display name
+    session['oldusername'] = session['username']
 
     emit("announce message", entire_message, room=room)
 

@@ -54,7 +54,7 @@
           socket.on('connect', () => {
 
               const connected = "has connected";
-              socket.emit('submit message', {'message': connected, 'username': null, 'channel': null});
+              socket.emit('submit message', {'message': connected, 'channel': null});
 
               const join = document.querySelector('#channel-select').innerHTML;
               socket.emit('join_channel', join);
@@ -63,15 +63,16 @@
               document.querySelector('#send-button').onclick = () => {
                   const message = document.querySelector('#message-input').value;
                   const channel = document.querySelector('#channel-select').innerHTML;
-                  socket.emit('submit message', {'message': message, 'username': null, 'channel': channel});
+                  socket.emit('submit message', {'message': message, 'channel': channel});
               };
 
+              // The 'change name' button should emit a "change name" event
               document.querySelector('#change-name-button').onclick = (e) => {
                   e.preventDefault()
                   const username = document.querySelector('#name-input').value;
                   document.querySelector('#username-select').innerHTML = username;
-                  const changed = "has changed display name to";
-                  socket.emit('submit message', {'message': changed, 'username': username, 'channel': null});
+                  const channel = document.querySelector('#channel-select').innerHTML;
+                  socket.emit('change name', {'username': username, 'channel': channel});
               };
 
           // When a new message is announced, add to the unordered 'messages' list
