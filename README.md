@@ -28,14 +28,10 @@ Lastly, if the user closes the browser tab of a channel page and later re-opens 
 
 My personal touch is the ability to change the display name on the channel page, which turned out to be quite challenging. At first, I was trying to combine changing the display name via a form that sends the user data to the current page with emitting a message to all users that a user has changed his/her display name. This does not work, however, because the form submission reloads the page.
 
-Disabled the form. in JavaScript.
+I eventually decided to disable the form submission in JavaScript and instead extract the new display name from the message that gets emitted. The `session['username']` variable is then immediately updated and the `session['oldusername']` variable - which is also assigned to the user's first chosen display name on the login page - is updated after setting `entire_message`.
 
-Extracting the new display name from the message that gets emitted and updating the `session['username']` variable that way.
+Now, when a user changes his/her display name on the channel page, all users in the channel get a notification that specifies who changed their display name and also what the new display name of that user is. The new username is shown correctly when the user sends a new message in the channel and if the users decides to change his/her display name a second or more times, the notification send to all users still correctly shows what the last display name of the user was and to what he or she changed it.
 
-The `session['oldusername']` variable - which is also set on the login page - is updated after `entire_message`
-
-When a user changes his/her display name on the channel page, all users in the channel get a notification that specifies who changed their display name and also what the new display name of that user is.
-
-The only ... , however, is that it only works for as long as the user stays in the channel. Leaving the channel, reloading the page or closing the browser tab all result in the display name being reset to the old display name.
+It has to be noted, however, that it only works for as long as the user stays in the channel. Leaving the channel, reloading the page or closing the browser tab all result in the display name being reset to the old display name.
 
 While this arguably makes the functionality more interesting, I cannot entirely explain why this happens.

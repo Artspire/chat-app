@@ -40,7 +40,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <!-- Socket.io JavaScript -->
+    <!-- Socket.IO JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
     <script type="text/javascript">
@@ -53,11 +53,8 @@
           // When connected, configure buttons
           socket.on('connect', () => {
 
-              const connected = "has connected";
-              socket.emit('submit message', {'message': connected, 'channel': null});
-
-              const join = document.querySelector('#channel-select').innerHTML;
-              socket.emit('join_channel', join);
+              const channel = document.querySelector('#channel-select').innerHTML;
+              socket.emit('join_channel', {'channel': channel});
 
               // The 'send message' button should emit a "submit messsage" event
               document.querySelector('#send-button').onclick = () => {
@@ -67,23 +64,26 @@
               };
 
               // The 'change name' button should emit a "change name" event
-              document.querySelector('#change-name-button').onclick = (e) => {
-                  e.preventDefault()
+              document.querySelector('#change-name-button').onclick = (event) => {
+                  event.preventDefault()
                   const username = document.querySelector('#name-input').value;
-                  document.querySelector('#username-select').innerHTML = username;
-                  const channel = document.querySelector('#channel-select').innerHTML;
-                  socket.emit('change name', {'username': username, 'channel': channel});
+                  // Only emit the event if the user actually entered something in the input field
+                  if (username) {
+                      document.querySelector('#username-select').innerHTML = username;
+                      const channel = document.querySelector('#channel-select').innerHTML;
+                      socket.emit('change name', {'username': username, 'channel': channel});
+                  };
               };
+            });
 
-          // When a new message is announced, add to the unordered 'messages' list
-          socket.on('announce message', entire_message => {
-              const li = document.createElement('li');
-              li.innerHTML = entire_message;
-              document.querySelector('#messages').append(li);
-              document.querySelector('#message-input').value = "";
-              document.querySelector('#name-input').value = "";
-          });
-      });
+            // When a new message is announced, add to the unordered 'messages' list
+            socket.on('announce message', entire_message => {
+                const li = document.createElement('li');
+                li.innerHTML = entire_message;
+                document.querySelector('#messages').append(li);
+                document.querySelector('#message-input').value = "";
+                document.querySelector('#name-input').value = "";
+            });
     });
 
     </script>

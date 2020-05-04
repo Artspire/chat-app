@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, redirect, render_template, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session
 from flask_session import Session
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from datetime import datetime
@@ -16,6 +16,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Global variables to store channels and chat history
 channels = []
 chat_history = {}
 
@@ -23,6 +24,7 @@ chat_history = {}
 @app.route("/" , methods=["GET", "POST"])
 @login_required
 def index():
+    """Homepage"""
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -78,7 +80,7 @@ def login():
         # Also store username in session variable 'oldusername'
         session['oldusername'] = session['username']
 
-        # Redirect user to main page
+        # Redirect user to homepage
         return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
@@ -130,8 +132,15 @@ def channel(channel_id):
 
 
 @socketio.on("join_channel")
-def on_join(join):
-    join_room(join)
+def on_join(data):
+
+    room = data["channel"]
+
+    join_room(room)
+
+    entire_message = session["username"] + " has connected"
+
+    emit("announce message", entire_message, room=room)
 
 
 @socketio.on("submit message")
@@ -146,20 +155,14 @@ def messages(data):
     now = datetime.now()
     timestamp = now.strftime("%H:%M:%S")
 
-    if message == 'has connected':
-        entire_message = session['username'] + " " + message
+    entire_message = session['username'] + ": " + message + " " + "[" + timestamp + "]"
 
-    else:
-        entire_message = session['username'] + ": " + message + " " + "[" + timestamp + "]"
+    # Delete first message if total messages stored in list reaches maximum of 100
+    if len(chat_history[room]) == 100:
+        del chat_history[room][0]
 
-        # Delete first message if total messages stored in list reaches maximum of 100
-        if len(chat_history[room]) == 100:
-            del chat_history[room][0]
-
-        # Store message into messages dictionary
-        chat_history[room].append(entire_message)
-
-    print(entire_message)
+    # Store message into chat history dictionary
+    chat_history[room].append(entire_message)
 
     emit("announce message", entire_message, room=room)
 
@@ -185,11 +188,15 @@ def change(data):
 
 
 @socketio.on("leave_channel")
-def on_leave(leave):
+def on_leave(data):
+
+    room = data["channel"]
 
     # Remove the last channel from session variable
+    ## leave_room functionality currently not used
     session.pop('last_channel', None)
-    leave_room(leave)
+
+    leave_room(room)
 
 
 if __name__ == '__main__':
