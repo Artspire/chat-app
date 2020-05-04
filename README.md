@@ -14,7 +14,7 @@ My project folder includes a <i>static</i> folder containing an image for the `e
 
 ## Functionality
 
-When a user browses to Flack for the first time, the user is asked to enter a display name. After registration, the user is taken to the homepage where he or she can create a channel or select one of the existing channels. If the user decides to create a new channel, the user is automatically redirected to the channel after clicking the "create channel" button. If the channel already exists, however, the user will be shown an error.
+When a user browses to Flack for the first time, the user is asked to enter a display name. After signing in, the user is taken to the homepage where he or she can create a channel or select one of the existing channels. If the user decides to create a new channel, the user is automatically redirected to the channel after clicking the "create channel" button. If the channel already exists, however, the user will be shown an error.
 
 On the channel page, the user will be presented with all the messages - with a maximum of 100 - that have previously been sent in the channel by other users. If the channel was just created by the user, there will naturally be no previous messages to display.
 
