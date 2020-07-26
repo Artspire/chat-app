@@ -33,5 +33,3 @@ I eventually decided to disable the form submission in JavaScript and instead ex
 Now, when a user changes his/her display name on the channel page, all users in the channel get a notification that specifies who changed their display name and also what the new display name of that user is. The new username is shown correctly when the user sends a new message in the channel and if the users decides to change his/her display name a second or more times, the notification send to all users still correctly shows what the last display name of the user was and to what he or she changed it.
 
 It has to be noted, however, that it only works for as long as the user stays in the channel. Leaving the channel, reloading the page or closing the browser tab all result in the display name being reset to the old display name.
-
-While this arguably makes the functionality more interesting, I cannot entirely explain why this happens.
