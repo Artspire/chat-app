@@ -1,8 +1,8 @@
-# Project 2
+# Flack
 
-<b>Web Programming with Python and JavaScript</b>
+Flack is an online messaging service that makes use of the <a href="https://flask-socketio.readthedocs.io/">Flask-SocketIO</a> library and the <a href="https://socket.io/">SocketIO</a> JavaScript library.
 
-For project2, I have made, per the requirements, an online messaging service called Flack. This project makes use of the <a href="https://flask-socketio.readthedocs.io/">Flask-SocketIO</a> library and the <a href="https://socket.io/">SocketIO</a> JavaScript library.
+For a video walkthrough, see: https://youtu.be/5H-iHxcgVSs
 
 ## Layout
 
